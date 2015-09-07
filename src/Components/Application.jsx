@@ -4,6 +4,18 @@
 var Application = React.createClass({
 	mixins: [Fluxxor.FluxMixin(React), Fluxxor.StoreWatchMixin("ApplicationStore")],
 	/**
+	 * On mount
+	 */
+	componentDidMount: function() {
+		$.get(this.props.source, function(result) {
+			 var data = result.photos.items.map(function(photo) {
+				return [photo, photo];
+			}).concatAll().shuffle();
+
+			this.getFlux().actions.dataDone(data);
+		}.bind(this));
+	},
+	/**
 	 * Starts the game
 	 */
 	startGame: function() {

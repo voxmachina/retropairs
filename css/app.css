@@ -11,6 +11,23 @@ h1, h2 {
 	font-size: 1em;
 }
 
+/** board */
+#board {
+	margin: 0 auto;
+	width: 100%;
+}
+
+/** Card */
+.card {
+	cursor: pointer;
+	width: 200px;
+	height: 300px;
+	overflow: hidden;
+	float: left;
+	background-size: cover;
+	margin: 10px;
+}
+
 /** SETUP */
 .off {
 	display: none;
