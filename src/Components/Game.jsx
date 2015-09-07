@@ -21,6 +21,10 @@ var Game = React.createClass({
 		var cards = this.state.selectedCards;
 		var delay;
 
+		if (cards.length !== undefined && cards.length === 2) {
+			return;
+		}
+
 		if (cards.length !== undefined && cards.length === 1) {
 			if (this.areCardsEqual(cards[0], card)) {
 				this.getFlux().actions.equalFound(card);

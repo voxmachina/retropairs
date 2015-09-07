@@ -190,7 +190,7 @@ var Board = React.createClass({displayName: "Board",
 		var game = this.props.game;
 		var onSelect = this.props.onCardSelect;
 
-		return React.createElement("div", {id: "board"}, 
+		return React.createElement("div", {id: "board", className: "container"}, 
 			this.state.photos.data.map(function(item, index) {
 				return React.createElement(Card, {identifier: item.id + '.' + index, 
 							 onSelect: onSelect.bind(game, item, item.id + '.' + index), item: item, 
@@ -294,6 +294,10 @@ var Game = React.createClass({displayName: "Game",
 	onCardSelect: function(card, identifier) {
 		var cards = this.state.selectedCards;
 		var delay;
+
+		if (cards.length !== undefined && cards.length === 2) {
+			return;
+		}
 
 		if (cards.length !== undefined && cards.length === 1) {
 			if (this.areCardsEqual(cards[0], card)) {
