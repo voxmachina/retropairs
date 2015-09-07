@@ -20,18 +20,19 @@ h1, h2 {
 }
 
 #status-bar h5 {
-	font-size: 2em;
+	font-size: 1em;
 }
 
 /** end */
 #end {
 	position: absolute;
-	top: 50%;
-	left: 60%;
 	width: 30em;
 	height: 18em;
 	margin-top: -15em;
 	margin-left: -15em;
+	top: 50%;
+	left: 50%;
+	font-size: 0.6em;
 }
 
 .final-winner {
@@ -47,18 +48,14 @@ h1, h2 {
 /** Card */
 .card {
 	cursor: pointer;
-	width: 200px;
-	height: 300px;
+	width: 100px;
+	height: 200px;
 	overflow: hidden;
 	float: left;
-	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
 	margin: 10px;
 }
-
-/*.card:hover {*/
-	/*animation: match 1s forwards;*/
-	/*-webkit-animation: match 1s forwards;*/
-/*}*/
 
 .matched-card {
 	-webkit-transition: -webkit-transform .5s;
@@ -97,7 +94,7 @@ h1, h2 {
 #setup {
 	position: absolute;
 	top: 50%;
-	left: 60%;
+	left: 51%;
 	width: 30em;
 	height: 18em;
 	margin-top: -15em;
@@ -152,9 +149,9 @@ h1, h2 {
 
 /** notifications */
 .notifications {
+	top: -115px;
+	left: 40px;
 	position: absolute;
-	top: -40px;
-	right: -315px;
 	display: none;
 	box-shadow: 10px 10px 5px 0 rgba(0,0,0,0.75);
 	padding: 10px;
@@ -197,6 +194,17 @@ h1, h2 {
 		font-size: 2em;
 	}
 
+	.card {
+		cursor: pointer;
+		width: 200px;
+		height: 300px;
+		overflow: hidden;
+		float: left;
+		background-repeat: no-repeat;
+		background-size: cover;
+		margin: 10px;
+	}
+
 	#setup, #end {
 		left: 50%;
 	}
@@ -205,5 +213,20 @@ h1, h2 {
 		margin-top: 50px;
 		margin-left: -125px;
 		display: block;
+	}
+
+	#status-bar h5 {
+		font-size: 2em;
+	}
+
+	.notifications {
+		left: -15px;
+		top: -135px;
+	}
+
+	#end {
+		top: 50%;
+		left: 50%;
+		font-size: 1em;
 	}
 }
