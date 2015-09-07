@@ -22,7 +22,9 @@ var Board = React.createClass({
 
 		return <div id="board">
 			{this.state.photos.data.map(function(item, index) {
-				return <Card onSelect={onSelect.bind(game, item)} item={item} key={item.id + '.' + index} />;
+				return <Card identifier={item.id + '.' + index}
+							 onSelect={onSelect.bind(game, item, item.id + '.' + index)} item={item}
+							 key={item.id + '.' + index} />;
 			})}
 		</div>;
 	}

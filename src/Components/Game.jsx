@@ -15,21 +15,22 @@ var Game = React.createClass({
 	 * On selecting a card
 	 *
 	 * @param card
+	 * @param identifier
 	 */
-	onCardSelect: function(card) {
+	onCardSelect: function(card, identifier) {
 		var cards = this.state.selectedCards;
 
 		if (cards.length !== undefined && cards.length === 1) {
-			if (this.areCardsEqual(cards[0].card, card)) {
+			if (this.areCardsEqual(cards[0], card)) {
 				this.getFlux().actions.equalFound(card);
 			} else {
 				this.getFlux().actions.nextPlayer();
 			}
 
 			this.getFlux().actions.resetSelectedCards();
-		} else {
-			this.getFlux().actions.selectCard(card);
 		}
+
+		this.getFlux().actions.selectCard(card, identifier);
 	},
 	/**
 	 * Determines if current selected cards are equal

@@ -44,9 +44,9 @@ var actions = {
 	/**
 	 * Selects a card
 	 */
-	selectCard: function(card) {
+	selectCard: function(card, id) {
 		if (card !== undefined) {
-			this.dispatch(constants.SELECT_CARD, {card: card});
+			this.dispatch(constants.SELECT_CARD, {card: card, id: id || null});
 		} else {
 			throw new Error("Card not defined!");
 		}

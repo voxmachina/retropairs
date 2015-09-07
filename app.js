@@ -106,14 +106,31 @@ var Card = React.createClass({displayName: "Card",
 		return this.getFlux().store("ApplicationStore").getState();
 	},
 	/**
+	 * Determines if this card is selected
+	 */
+	isCardSelected: function() {
+		var cardId = this.props.identifier;
+		var dataSet = this.state.selectedCards.filter(function(item) {
+			return item.identifier === cardId;
+		});
+
+		return dataSet.length > 0;
+	},
+	/**
 	 * Render application
 	 *
 	 * @returns {XML}
 	 */
 	render: function () {
 		var cardStyle = {
-			backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+			backgroundImage: 'url(imgs/card.jpg)'
 		};
+
+		if(this.isCardSelected()) {
+			cardStyle = {
+				backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+			};
+		}
 
 		return React.createElement("div", {onClick: this.props.onSelect, id: this.props.item.id, className: "card", style: cardStyle});
 	}
@@ -143,7 +160,9 @@ var Board = React.createClass({displayName: "Board",
 
 		return React.createElement("div", {id: "board"}, 
 			this.state.photos.data.map(function(item, index) {
-				return React.createElement(Card, {onSelect: onSelect.bind(game, item), item: item, key: item.id + '.' + index});
+				return React.createElement(Card, {identifier: item.id + '.' + index, 
+							 onSelect: onSelect.bind(game, item, item.id + '.' + index), item: item, 
+							 key: item.id + '.' + index});
 			})
 		);
 	}
@@ -191,21 +210,22 @@ var Game = React.createClass({displayName: "Game",
 	 * On selecting a card
 	 *
 	 * @param card
+	 * @param identifier
 	 */
-	onCardSelect: function(card) {
+	onCardSelect: function(card, identifier) {
 		var cards = this.state.selectedCards;
 
 		if (cards.length !== undefined && cards.length === 1) {
-			if (this.areCardsEqual(cards[0].card, card)) {
+			if (this.areCardsEqual(cards[0], card)) {
 				this.getFlux().actions.equalFound(card);
 			} else {
 				this.getFlux().actions.nextPlayer();
 			}
 
 			this.getFlux().actions.resetSelectedCards();
-		} else {
-			this.getFlux().actions.selectCard(card);
 		}
+
+		this.getFlux().actions.selectCard(card, identifier);
 	},
 	/**
 	 * Determines if current selected cards are equal
@@ -347,9 +367,12 @@ var ApplicationStore = Fluxxor.createStore({
 	/**
 	 * Selects a card
 	 *
-	 * @param card
+	 * @param data
 	 */
-	selectCard: function(card) {
+	selectCard: function(data) {
+		var card = data.card;
+		card.identifier = data.id;
+
 		this.selectedCards.push(card);
 		this.emit("change");
 	},
@@ -454,9 +477,9 @@ var actions = {
 	/**
 	 * Selects a card
 	 */
-	selectCard: function(card) {
+	selectCard: function(card, id) {
 		if (card !== undefined) {
-			this.dispatch(constants.SELECT_CARD, {card: card});
+			this.dispatch(constants.SELECT_CARD, {card: card, id: id || null});
 		} else {
 			throw new Error("Card not defined!");
 		}

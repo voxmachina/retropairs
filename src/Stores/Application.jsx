@@ -63,9 +63,12 @@ var ApplicationStore = Fluxxor.createStore({
 	/**
 	 * Selects a card
 	 *
-	 * @param card
+	 * @param data
 	 */
-	selectCard: function(card) {
+	selectCard: function(data) {
+		var card = data.card;
+		card.identifier = data.id;
+
 		this.selectedCards.push(card);
 		this.emit("change");
 	},
