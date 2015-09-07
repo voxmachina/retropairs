@@ -1,6 +1,7 @@
 # retropairs
 A Retro Pairs Game usable and working with most common desktop and mobile browsers.
-Live demo: http://igeni.us/retropairs
+
+# Live demo: http://igeni.us/retropairs
 
 # Development
 
