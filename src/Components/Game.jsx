@@ -19,6 +19,7 @@ var Game = React.createClass({
 	 */
 	onCardSelect: function(card, identifier) {
 		var cards = this.state.selectedCards;
+		var delay;
 
 		if (cards.length !== undefined && cards.length === 1) {
 			if (this.areCardsEqual(cards[0], card)) {
@@ -27,15 +28,18 @@ var Game = React.createClass({
 				this.getFlux().actions.nextPlayer();
 			}
 
-			setTimeout(function() {
+			delay = setTimeout(function() {
 				this.getFlux().actions.resetSelectedCards();
 			}.bind(this), 1000);
 		}
 
-		this.getFlux().actions.selectCard(card, identifier);
-
 		if (this.state.matched.length*2 === this.state.photos.data.length) {
-			this.getFlux().actions.endGame();
+			clearTimeout(delay);
+			setTimeout(function() {
+				this.getFlux().actions.endGame();
+			}.bind(this), 1000);
+		} else {
+			this.getFlux().actions.selectCard(card, identifier);
 		}
 	},
 	/**

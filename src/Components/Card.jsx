@@ -34,31 +34,38 @@ var Card = React.createClass({
 		return dataSet.length > 0;
 	},
 	/**
+	 * Get image bg
+	 * @returns {{backgroundImage: string}}
+	 */
+	getPhotoBackground: function() {
+		return {backgroundImage: 'url(' + this.props.item.photoUrl + ')'};
+	},
+	/**
+	 * get template bg
+	 */
+	getCardBackground: function() {
+		return {backgroundImage: 'url(imgs/card.jpg)'};
+	},
+	/**
 	 * Render application
 	 *
 	 * @returns {XML}
 	 */
 	render: function () {
-		//var cardStyle = {
-		//	backgroundImage: 'url(imgs/card.jpg)'
-		//};
-
-		cardStyle = {
-			backgroundImage: 'url(' + this.props.item.photoUrl + ')'
-		};
-
-		//if(this.isCardSelected()) {
-		//	cardStyle = {
-		//		backgroundImage: 'url(' + this.props.item.photoUrl + ')'
-		//	};
-		//}
+		var cardStyle = this.getCardBackground();
+		var className = "card";
 
 		if(this.isMatched()) {
-			cardStyle = {
-				backgroundImage: 'none'
-			};
+			className += " matched-card";
+			cardStyle = this.getPhotoBackground();
+		} else if(this.isCardSelected()) {
+			className += " selected-card";
+			cardStyle = this.getPhotoBackground();
+		} else {
+			className += " off-card";
 		}
 
-		return <div onClick={this.props.onSelect} id={this.props.item.id} className="card" style={cardStyle}></div>;
+		return <div className={className} onClick={this.props.onSelect} id={this.props.item.id}
+					style={cardStyle}></div>;
 	}
 });

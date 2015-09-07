@@ -11,6 +11,18 @@ h1, h2 {
 	font-size: 1em;
 }
 
+/** status bar */
+#status-bar {
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+#status-bar h5 {
+	font-size: 2em;
+}
+
 /** end */
 #end {
 	position: absolute;
@@ -41,6 +53,40 @@ h1, h2 {
 	float: left;
 	background-size: cover;
 	margin: 10px;
+}
+
+/*.card:hover {*/
+	/*animation: match 1s forwards;*/
+	/*-webkit-animation: match 1s forwards;*/
+/*}*/
+
+.matched-card {
+	-webkit-transition: -webkit-transform .5s;
+	transition: transform .5s;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	animation: match 1s forwards;
+	-webkit-animation: match 1s forwards;
+}
+
+.selected-card {
+	-webkit-transition: -webkit-transform .5s;
+	transition: transform .5s;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+.off-card {
+	-webkit-transition: -webkit-transform .5s;
+	transition: transform .5s;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
 }
 
 /** SETUP */
@@ -130,10 +176,18 @@ h1, h2 {
 		visibility: hidden;
 	}
 }
-
 @-webkit-keyframes blink {
 	to {
 		visibility: hidden;
+	}
+}
+
+@keyframes match {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
 	}
 }
 

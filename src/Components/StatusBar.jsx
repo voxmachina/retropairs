@@ -18,7 +18,7 @@ var StatusBar = React.createClass({
 	 */
 	render: function () {
 		return <div id="status-bar">
-			<h5>Player {this.state.currentPlayer.number} <span>{this.state.currentPlayer.points}</span> points</h5>
+			<h5>Player {this.state.currentPlayer.number} / <span>{this.state.currentPlayer.points}</span> points</h5>
 		</div>;
 	}
 });

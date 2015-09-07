@@ -132,32 +132,39 @@ var Card = React.createClass({displayName: "Card",
 		return dataSet.length > 0;
 	},
 	/**
+	 * Get image bg
+	 * @returns {{backgroundImage: string}}
+	 */
+	getPhotoBackground: function() {
+		return {backgroundImage: 'url(' + this.props.item.photoUrl + ')'};
+	},
+	/**
+	 * get template bg
+	 */
+	getCardBackground: function() {
+		return {backgroundImage: 'url(imgs/card.jpg)'};
+	},
+	/**
 	 * Render application
 	 *
 	 * @returns {XML}
 	 */
 	render: function () {
-		//var cardStyle = {
-		//	backgroundImage: 'url(imgs/card.jpg)'
-		//};
-
-		cardStyle = {
-			backgroundImage: 'url(' + this.props.item.photoUrl + ')'
-		};
-
-		//if(this.isCardSelected()) {
-		//	cardStyle = {
-		//		backgroundImage: 'url(' + this.props.item.photoUrl + ')'
-		//	};
-		//}
+		var cardStyle = this.getCardBackground();
+		var className = "card";
 
 		if(this.isMatched()) {
-			cardStyle = {
-				backgroundImage: 'none'
-			};
+			className += " matched-card";
+			cardStyle = this.getPhotoBackground();
+		} else if(this.isCardSelected()) {
+			className += " selected-card";
+			cardStyle = this.getPhotoBackground();
+		} else {
+			className += " off-card";
 		}
 
-		return React.createElement("div", {onClick: this.props.onSelect, id: this.props.item.id, className: "card", style: cardStyle});
+		return React.createElement("div", {className: className, onClick: this.props.onSelect, id: this.props.item.id, 
+					style: cardStyle});
 	}
 });
 
@@ -213,7 +220,7 @@ var StatusBar = React.createClass({displayName: "StatusBar",
 	 */
 	render: function () {
 		return React.createElement("div", {id: "status-bar"}, 
-			React.createElement("h5", null, "Player ", this.state.currentPlayer.number, " ", React.createElement("span", null, this.state.currentPlayer.points), " points")
+			React.createElement("h5", null, "Player ", this.state.currentPlayer.number, " / ", React.createElement("span", null, this.state.currentPlayer.points), " points")
 		);
 	}
 });
@@ -286,6 +293,7 @@ var Game = React.createClass({displayName: "Game",
 	 */
 	onCardSelect: function(card, identifier) {
 		var cards = this.state.selectedCards;
+		var delay;
 
 		if (cards.length !== undefined && cards.length === 1) {
 			if (this.areCardsEqual(cards[0], card)) {
@@ -294,15 +302,18 @@ var Game = React.createClass({displayName: "Game",
 				this.getFlux().actions.nextPlayer();
 			}
 
-			setTimeout(function() {
+			delay = setTimeout(function() {
 				this.getFlux().actions.resetSelectedCards();
 			}.bind(this), 1000);
 		}
 
-		this.getFlux().actions.selectCard(card, identifier);
-
 		if (this.state.matched.length*2 === this.state.photos.data.length) {
-			this.getFlux().actions.endGame();
+			clearTimeout(delay);
+			setTimeout(function() {
+				this.getFlux().actions.endGame();
+			}.bind(this), 1000);
+		} else {
+			this.getFlux().actions.selectCard(card, identifier);
 		}
 	},
 	/**
@@ -375,7 +386,7 @@ var Setup = React.createClass({displayName: "Setup",
 			React.createElement("div", {className: "row players-setup-container footnote"}, 
 				React.createElement("p", null, "press as many times the player buttons to keep adding more players")
 			), 
-			React.createElement(Notifications, {active: this.state.hasSetupErrored, msg: "Please pick at least two players"})
+			React.createElement(Notifications, {active: this.state.hasSetupErrored, msg: "Please pick at least one player"})
 		);
 	}
 });
