@@ -511,7 +511,7 @@ var ApplicationStore = Fluxxor.createStore({
 	 * @param payload
 	 */
 	addPlayers: function (payload) {
-		if (payload.numberOfPlayers !== undefined && Number.isInteger(payload.numberOfPlayers)) {
+		if (payload.numberOfPlayers !== undefined && payload.numberOfPlayers === parseInt(payload.numberOfPlayers, 10)) {
 			this.numberOfPlayers += payload.numberOfPlayers;
 			this.emit("change");
 		} else {
