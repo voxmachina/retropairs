@@ -44,7 +44,7 @@ var Card = React.createClass({
 	 * get template bg
 	 */
 	getCardBackground: function() {
-		return {backgroundImage: 'url(imgs/card.jpg)'};
+		return {backgroundImage: 'url(imgs/card.png)'};
 	},
 	/**
 	 * Render application
