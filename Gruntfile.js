@@ -13,6 +13,7 @@ module.exports = function (grunt) {
 						'src/Components/Card.jsx',
 						'src/Components/Board.jsx',
 						'src/Components/StatusBar.jsx',
+						'src/Components/End.jsx',
 						'src/Components/Game.jsx',
 						'src/Components/Setup.jsx',
 						'src/Stores/Application.jsx',

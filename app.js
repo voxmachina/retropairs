@@ -36,7 +36,11 @@ var Application = React.createClass({displayName: "Application",
 	 */
 	render: function () {
 		if (this.state.gameStarted) {
-			return React.createElement(Game, null);
+			if (this.state.gameEnded) {
+				return React.createElement(End, null);
+			} else {
+				return React.createElement(Game, null);
+			}
 		} else {
 			return React.createElement(Setup, null);
 		}
@@ -117,18 +121,39 @@ var Card = React.createClass({displayName: "Card",
 		return dataSet.length > 0;
 	},
 	/**
+	 * Determines if this card is already matched
+	 */
+	isMatched: function() {
+		var cardId = this.props.item.id;
+		var dataSet = this.state.matched.filter(function(item) {
+			return item.card.id === cardId;
+		});
+
+		return dataSet.length > 0;
+	},
+	/**
 	 * Render application
 	 *
 	 * @returns {XML}
 	 */
 	render: function () {
-		var cardStyle = {
-			backgroundImage: 'url(imgs/card.jpg)'
+		//var cardStyle = {
+		//	backgroundImage: 'url(imgs/card.jpg)'
+		//};
+
+		cardStyle = {
+			backgroundImage: 'url(' + this.props.item.photoUrl + ')'
 		};
 
-		if(this.isCardSelected()) {
+		//if(this.isCardSelected()) {
+		//	cardStyle = {
+		//		backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+		//	};
+		//}
+
+		if(this.isMatched()) {
 			cardStyle = {
-				backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+				backgroundImage: 'none'
 			};
 		}
 
@@ -196,6 +221,53 @@ var StatusBar = React.createClass({displayName: "StatusBar",
 /**
  * Main application view controller
  */
+var End = React.createClass({displayName: "End",
+	mixins: [Fluxxor.FluxMixin(React), Fluxxor.StoreWatchMixin("ApplicationStore")],
+	/**
+	 * Get state
+	 *
+	 * @returns Object
+	 */
+	getStateFromFlux: function() {
+		return this.getFlux().store("ApplicationStore").getState();
+	},
+	/**
+	 * Gets winner player
+	 */
+	getWinner: function() {
+		var winner = {number: 0, points: 0};
+		var players = this.state.players;
+		var n = players.length;
+
+		for(var i=0; i<n; i++) {
+			if (players[i].points > winner.points) {
+				winner = players[i];
+			}
+		}
+
+		return winner;
+	},
+	/**
+	 * Render application
+	 *
+	 * @returns {XML}
+	 */
+	render: function () {
+		var winner = this.getWinner();
+
+		return React.createElement("div", {id: "end"}, 
+			React.createElement("h1", null, "GAME OVER"), 
+			React.createElement("p", null, "Player ", winner.number, " wins with ", winner.points, " ", winner.points !== 1 ? 'points' : 'point'), 
+			React.createElement("div", {className: "final-winner"}, 
+				React.createElement("img", {src: "imgs/win.png"})
+			)
+		);
+	}
+});
+
+/**
+ * Main application view controller
+ */
 var Game = React.createClass({displayName: "Game",
 	mixins: [Fluxxor.FluxMixin(React), Fluxxor.StoreWatchMixin("ApplicationStore")],
 	/**
@@ -222,10 +294,16 @@ var Game = React.createClass({displayName: "Game",
 				this.getFlux().actions.nextPlayer();
 			}
 
-			this.getFlux().actions.resetSelectedCards();
+			setTimeout(function() {
+				this.getFlux().actions.resetSelectedCards();
+			}.bind(this), 1000);
 		}
 
 		this.getFlux().actions.selectCard(card, identifier);
+
+		if (this.state.matched.length*2 === this.state.photos.data.length) {
+			this.getFlux().actions.endGame();
+		}
 	},
 	/**
 	 * Determines if current selected cards are equal
@@ -317,6 +395,8 @@ var ApplicationStore = Fluxxor.createStore({
 		this.photos = [];
 		this.currentPlayer = {};
 		this.selectedCards = [];
+		this.matched = [];
+		this.gameEnded = false;
 
 		this.bindActions(
 			constants.ADD_PLAYERS, this.addPlayers,
@@ -326,8 +406,16 @@ var ApplicationStore = Fluxxor.createStore({
 			constants.SELECT_CARD, this.selectCard,
 			constants.RESET_SELECTED_CARDS, this.resetSelectedCards,
 			constants.NEXT_PLAYER, this.assignNextPlayer,
-			constants.EQUAL_FOUND, this.onMatch
+			constants.EQUAL_FOUND, this.onMatch,
+			constants.END_GAME, this.finishGame
 		);
+	},
+	/**
+	 * End game
+	 */
+	finishGame: function() {
+		this.gameEnded = true;
+		this.emit("change");
 	},
 	/**
 	 * Sets current photo data
@@ -341,6 +429,7 @@ var ApplicationStore = Fluxxor.createStore({
 	 */
 	onMatch: function(card) {
 		this.currentPlayer.points++;
+		this.matched.push(card);
 		this.emit("change");
 	},
 	/**
@@ -426,7 +515,9 @@ var ApplicationStore = Fluxxor.createStore({
 			players: this.players,
 			photos: this.photos,
 			currentPlayer: this.currentPlayer,
-			selectedCards: this.selectedCards
+			selectedCards: this.selectedCards,
+			matched: this.matched,
+			gameEnded: this.gameEnded
 		};
 	}
 });
@@ -442,12 +533,19 @@ var constants = {
 	SELECT_CARD: "SELECT_CARD",
 	RESET_SELECTED_CARDS: "RESET_SELECTED_CARDS",
 	NEXT_PLAYER: "NEXT_PLAYER",
-	EQUAL_FOUND: "EQUAL_FOUND"
+	EQUAL_FOUND: "EQUAL_FOUND",
+	END_GAME: "END_GAME"
 };
 /**
  * Application actions
  */
 var actions = {
+	/**
+	 * On game end
+	 */
+	endGame: function() {
+		this.dispatch(constants.END_GAME);
+	},
 	/**
 	 * On data fetch done
 	 */

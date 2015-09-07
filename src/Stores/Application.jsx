@@ -13,6 +13,8 @@ var ApplicationStore = Fluxxor.createStore({
 		this.photos = [];
 		this.currentPlayer = {};
 		this.selectedCards = [];
+		this.matched = [];
+		this.gameEnded = false;
 
 		this.bindActions(
 			constants.ADD_PLAYERS, this.addPlayers,
@@ -22,8 +24,16 @@ var ApplicationStore = Fluxxor.createStore({
 			constants.SELECT_CARD, this.selectCard,
 			constants.RESET_SELECTED_CARDS, this.resetSelectedCards,
 			constants.NEXT_PLAYER, this.assignNextPlayer,
-			constants.EQUAL_FOUND, this.onMatch
+			constants.EQUAL_FOUND, this.onMatch,
+			constants.END_GAME, this.finishGame
 		);
+	},
+	/**
+	 * End game
+	 */
+	finishGame: function() {
+		this.gameEnded = true;
+		this.emit("change");
 	},
 	/**
 	 * Sets current photo data
@@ -37,6 +47,7 @@ var ApplicationStore = Fluxxor.createStore({
 	 */
 	onMatch: function(card) {
 		this.currentPlayer.points++;
+		this.matched.push(card);
 		this.emit("change");
 	},
 	/**
@@ -122,7 +133,9 @@ var ApplicationStore = Fluxxor.createStore({
 			players: this.players,
 			photos: this.photos,
 			currentPlayer: this.currentPlayer,
-			selectedCards: this.selectedCards
+			selectedCards: this.selectedCards,
+			matched: this.matched,
+			gameEnded: this.gameEnded
 		};
 	}
 });

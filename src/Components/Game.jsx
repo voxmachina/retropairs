@@ -27,10 +27,16 @@ var Game = React.createClass({
 				this.getFlux().actions.nextPlayer();
 			}
 
-			this.getFlux().actions.resetSelectedCards();
+			setTimeout(function() {
+				this.getFlux().actions.resetSelectedCards();
+			}.bind(this), 1000);
 		}
 
 		this.getFlux().actions.selectCard(card, identifier);
+
+		if (this.state.matched.length*2 === this.state.photos.data.length) {
+			this.getFlux().actions.endGame();
+		}
 	},
 	/**
 	 * Determines if current selected cards are equal

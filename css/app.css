@@ -11,6 +11,21 @@ h1, h2 {
 	font-size: 1em;
 }
 
+/** end */
+#end {
+	position: absolute;
+	top: 50%;
+	left: 60%;
+	width: 30em;
+	height: 18em;
+	margin-top: -15em;
+	margin-left: -15em;
+}
+
+.final-winner {
+	display: none;
+}
+
 /** board */
 #board {
 	margin: 0 auto;
@@ -128,7 +143,13 @@ h1, h2 {
 		font-size: 2em;
 	}
 
-	#setup {
+	#setup, #end {
 		left: 50%;
+	}
+
+	.final-winner {
+		margin-top: 50px;
+		margin-left: -125px;
+		display: block;
 	}
 }

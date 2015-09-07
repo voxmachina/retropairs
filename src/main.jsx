@@ -9,12 +9,19 @@ var constants = {
 	SELECT_CARD: "SELECT_CARD",
 	RESET_SELECTED_CARDS: "RESET_SELECTED_CARDS",
 	NEXT_PLAYER: "NEXT_PLAYER",
-	EQUAL_FOUND: "EQUAL_FOUND"
+	EQUAL_FOUND: "EQUAL_FOUND",
+	END_GAME: "END_GAME"
 };
 /**
  * Application actions
  */
 var actions = {
+	/**
+	 * On game end
+	 */
+	endGame: function() {
+		this.dispatch(constants.END_GAME);
+	},
 	/**
 	 * On data fetch done
 	 */

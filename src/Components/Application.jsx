@@ -36,7 +36,11 @@ var Application = React.createClass({
 	 */
 	render: function () {
 		if (this.state.gameStarted) {
-			return <Game />;
+			if (this.state.gameEnded) {
+				return <End />;
+			} else {
+				return <Game />;
+			}
 		} else {
 			return <Setup />;
 		}

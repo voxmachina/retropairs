@@ -23,18 +23,39 @@ var Card = React.createClass({
 		return dataSet.length > 0;
 	},
 	/**
+	 * Determines if this card is already matched
+	 */
+	isMatched: function() {
+		var cardId = this.props.item.id;
+		var dataSet = this.state.matched.filter(function(item) {
+			return item.card.id === cardId;
+		});
+
+		return dataSet.length > 0;
+	},
+	/**
 	 * Render application
 	 *
 	 * @returns {XML}
 	 */
 	render: function () {
-		var cardStyle = {
-			backgroundImage: 'url(imgs/card.jpg)'
+		//var cardStyle = {
+		//	backgroundImage: 'url(imgs/card.jpg)'
+		//};
+
+		cardStyle = {
+			backgroundImage: 'url(' + this.props.item.photoUrl + ')'
 		};
 
-		if(this.isCardSelected()) {
+		//if(this.isCardSelected()) {
+		//	cardStyle = {
+		//		backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+		//	};
+		//}
+
+		if(this.isMatched()) {
 			cardStyle = {
-				backgroundImage: 'url(' + this.props.item.photoUrl + ')'
+				backgroundImage: 'none'
 			};
 		}
 
