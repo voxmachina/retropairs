@@ -46,6 +46,9 @@ var Setup = React.createClass({
 			<div onClick={this.startGame} className="row players-setup-container">
 				<p className="start-btn blink">START</p>
 			</div>
+			<div className="row players-setup-container footnote">
+				<p>press as many times the player buttons to keep adding more players</p>
+			</div>
 			<Notifications active={this.state.hasSetupErrored} msg="Please pick at least two players" />
 		</div>;
 	}

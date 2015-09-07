@@ -19,7 +19,7 @@ h1, h2 {
 #setup {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 60%;
 	width: 30em;
 	height: 18em;
 	margin-top: -15em;
@@ -74,17 +74,22 @@ h1, h2 {
 
 /** notifications */
 .notifications {
+	position: absolute;
+	top: -40px;
+	right: -315px;
 	display: none;
-	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 10px 10px 5px 0 rgba(0,0,0,0.75);
 	padding: 10px;
 }
 
 .notifications.active {
 	display: block;
-	-webkit-animation-iteration-count: 1;
-	animation-iteration-count: 1;
-	animation: disapear 10s forwards;
-	-webkit-animation: disapear 10s forwards;
+}
+
+.footnote {
+	text-align: center;
+	font-size: 0.9em;
+	opacity: 0.8;
 }
 
 /** effects/animations */
@@ -100,21 +105,13 @@ h1, h2 {
 	}
 }
 
-@-webkit-keyframes disapear {
-	to {
-		opacity: 0;
-	}
-}
-
-@keyframes disapear {
-	to {
-		opacity: 0;
-	}
-}
-
 /** above mobile viewport */
 @media (min-width: 768px) {
 	h1, h2, .start-btn {
 		font-size: 2em;
+	}
+
+	#setup {
+		left: 50%;
 	}
 }

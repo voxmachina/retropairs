@@ -156,6 +156,9 @@ var Setup = React.createClass({displayName: "Setup",
 			React.createElement("div", {onClick: this.startGame, className: "row players-setup-container"}, 
 				React.createElement("p", {className: "start-btn blink"}, "START")
 			), 
+			React.createElement("div", {className: "row players-setup-container footnote"}, 
+				React.createElement("p", null, "press as many times the player buttons to keep adding more players")
+			), 
 			React.createElement(Notifications, {active: this.state.hasSetupErrored, msg: "Please pick at least two players"})
 		);
 	}
