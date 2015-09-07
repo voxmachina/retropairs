@@ -1,14 +1,8 @@
 /**
  * Main application view controller
  */
-var Application = React.createClass({
+var Game = React.createClass({
 	mixins: [Fluxxor.FluxMixin(React), Fluxxor.StoreWatchMixin("ApplicationStore")],
-	/**
-	 * Starts the game
-	 */
-	startGame: function() {
-		this.getFlux().actions.startGame();
-	},
 	/**
 	 * Get state
 	 *
@@ -23,10 +17,8 @@ var Application = React.createClass({
 	 * @returns {XML}
 	 */
 	render: function () {
-		if (this.state.gameStarted) {
-			return <Game />;
-		} else {
-			return <Setup />;
-		}
+		return <div id="game">
+			<h5>Game On</h5>
+		</div>;
 	}
 });
